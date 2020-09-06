@@ -10,12 +10,16 @@ import {
     Image,
     Alert,
     Modal,
-    ScrollView
+    ScrollView,
+    TouchableHighlight
 } from 'react-native'
+import { ListItem } from 'react-native-elements'
 
 import db from '../config';
 import firebase from 'firebase'
 import MyHeader from '../components/MyHeader'
+
+import { BookSearch } from 'react-native-google-books';
 
 export default class BookRequest extends React.Component {
     constructor() {
@@ -29,7 +33,24 @@ export default class BookRequest extends React.Component {
             requestedBookName: '',
             docId: '',
             bookStatus: '',
-            bookRequestStatus: ''
+            bookRequestStatus: '',
+            dataSource: '',
+            showFlatList: false,
+            imageLink: '',
+        }
+    }
+
+    async getBooksFromApi(bookName) {
+        this.setState({
+            bookName: bookName
+        })
+
+        if(bookName.length > 2) {
+            var books = await BookSearch.searchbook(bookName, 'AIzaSyCIv3OpcVRrqjGn230B0viQe3YGrDEtld8')
+            this.setState({
+                dataSource: books.data,
+                showFlatList: true
+            })
         }
     }
 
@@ -68,13 +89,15 @@ export default class BookRequest extends React.Component {
     addRequest = async (bookName,reasonToRequest)=>{
         var userId = this.state.userId
         var randomRequestId = this.createUniqueId()
+        var books = await BookSearch.searchbook(bookName, 'AIzaSyCIv3OpcVRrqjGn230B0viQe3YGrDEtld8')
         db.collection('Requested_Books').add({
             "user_id": userId,
             "book_name":bookName,
             "reason_to_request":reasonToRequest,
             "request_id"  : randomRequestId,
             "book_status": "Requested",
-            "date": firebase.firestore.FieldValue.serverTimestamp()
+            "date": firebase.firestore.FieldValue.serverTimestamp(),
+            "image_link": books.data[0].volumeInfo.imageLinks.smallThumbnail
         })
     
         await this.getBookRequest()
@@ -134,6 +157,30 @@ export default class BookRequest extends React.Component {
             })
     }
 
+    renderItem = ({item, i}) => {
+        // var obj = {
+        //     title: item.volumeInfo.title,
+        //     selfLink: item.selfLink,
+        //     byLink: item.saleInfo.byLink,
+        //     imageLink: item.volumeInfo.imageLinks
+        // }
+        <TouchableHighlight
+            style={{alignItems: 'center', backgroundColor: '#ccc', padding: 10, width: '90%'}}
+            activeOpacity={0.6}
+            underlayColor='yellow'
+            onPress={() => {
+                this.setState({
+                    showFlatList: false,
+                    bookName: item.volumeInfo.title
+                })
+            }}
+            bottomDivider
+        >
+            <Text style={styles.btnText}>{item.volumeInfo.title}</Text>
+        </TouchableHighlight>
+    }
+
+    keyExtractor = (item, index) => index.toString()
 
     render() {
 
@@ -164,19 +211,38 @@ export default class BookRequest extends React.Component {
                         <KeyboardAvoidingView style={styles.KeyboardAvoidingView}>
                             <TextInput style={styles.inputBox} placeholder={"Book Name"}
                                 onChangeText={text => {
-                                    this.setState({bookName: text})
+                                    this.getBooksFromApi(text)
+                                }}
+                                onClear={text => {
+                                    this.getBooksFromApi('')
                                 }}
                                 value={this.state.bookName}
                             />
-                            <TextInput style={styles.inputBox} placeholder={"Reason To Request"}
-                                onChangeText={text => {
-                                    this.setState({reasonToRequest: text})
-                                }}
-                                value={this.state.reasonToRequest}
-                            />
-                            <TouchableOpacity style={[styles.btn, {marginBottom: 20, marginTop: 20}]} onPress={()=>{this.addRequest(this.state.bookName,this.state.reasonToRequest)}}>
-                                <Text style={styles.btnText}>Request</Text>
-                            </TouchableOpacity>
+                            {
+                                this.state.showFlatList ?
+                                (
+                                    <FlatList
+                                        data={this.state.dataSource}
+                                        renderItem={this.renderItem}
+                                        enableEmptySections={true}
+                                        keyExtractor={this.keyExtractor}
+                                    />
+                                )
+                                : 
+                                (
+                                    <View style={{alignItems: 'center'}}>
+                                        <TextInput style={styles.inputBox} placeholder={"Reason To Request"}
+                                            onChangeText={text => {
+                                            this.setState({reasonToRequest: text})
+                                            }}
+                                            value={this.state.reasonToRequest}
+                                        />
+                                        <TouchableOpacity style={[styles.btn, {marginBottom: 20, marginTop: 20}]} onPress={()=>{this.addRequest(this.state.bookName,this.state.reasonToRequest)}}>
+                                            <Text style={styles.btnText}>Request</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                )
+                            }
                         </KeyboardAvoidingView>
                     </ScrollView>
                 </View>
