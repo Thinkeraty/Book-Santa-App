@@ -12,6 +12,8 @@ import MyHeader from '../components/MyHeader'
 import db from '../config'
 import firebase from 'firebase'
 
+import { RFValue } from 'react-native-responsive-fontsize'
+
 export default class SettingScreen extends Component{
   constructor(){
     super();
@@ -69,7 +71,8 @@ export default class SettingScreen extends Component{
             <TextInput
               style={styles.formTextInput}
               placeholder ={"First Name"}
-              maxLength ={8}
+              maxLength ={20}
+              containerStyle={{marginBottom: RFValue(25), marginTop: RFValue(30)}}
               onChangeText={(text)=>{
                 this.setState({
                   firstName: text
@@ -80,7 +83,8 @@ export default class SettingScreen extends Component{
             <TextInput
               style={styles.formTextInput}
               placeholder ={"Last Name"}
-              maxLength ={8}
+              maxLength ={20}
+              containerStyle={{marginBottom: RFValue(25), marginTop: RFValue(30)}}
               onChangeText={(text)=>{
                 this.setState({
                   lastName: text
@@ -92,6 +96,7 @@ export default class SettingScreen extends Component{
               style={styles.formTextInput}
               placeholder ={"Contact"}
               maxLength ={10}
+              containerStyle={{marginBottom: RFValue(25)}}
               keyboardType={'numeric'}
               onChangeText={(text)=>{
                 this.setState({

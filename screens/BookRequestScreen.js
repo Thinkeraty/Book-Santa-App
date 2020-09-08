@@ -21,6 +21,8 @@ import MyHeader from '../components/MyHeader'
 
 import { BookSearch } from 'react-native-google-books';
 
+import { RFValue } from 'react-native-responsive-fontsize'
+
 export default class BookRequest extends React.Component {
     constructor() {
         super()
@@ -182,6 +184,9 @@ export default class BookRequest extends React.Component {
 
     keyExtractor = (item, index) => index.toString()
 
+    componentDidMount() {
+    }
+
     render() {
 
         if(this.state.bookRequestStatus == true) {
@@ -210,12 +215,13 @@ export default class BookRequest extends React.Component {
                         {/* <Text style={{textAlign: 'center', fontSize: 30, marginTop: 50}}>Request A Book Here!</Text> */}
                         <KeyboardAvoidingView style={styles.KeyboardAvoidingView}>
                             <TextInput style={styles.inputBox} placeholder={"Book Name"}
+                                containerStyle={{fontSize: RFValue(60)}}
                                 onChangeText={text => {
                                     this.getBooksFromApi(text)
                                 }}
-                                onClear={text => {
-                                    this.getBooksFromApi('')
-                                }}
+                                // onClear={text => {
+                                //     this.getBooksFromApi('')
+                                // }}
                                 value={this.state.bookName}
                             />
                             {
@@ -225,6 +231,7 @@ export default class BookRequest extends React.Component {
                                         data={this.state.dataSource}
                                         renderItem={this.renderItem}
                                         enableEmptySections={true}
+                                        style={{marginTop: RFValue(10) }}
                                         keyExtractor={this.keyExtractor}
                                     />
                                 )
@@ -264,16 +271,17 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         marginTop: 40,
         paddingLeft: 5,
-        borderRadius: 10
+        borderRadius: 10,
+        fontSize:RFValue(20),
     },
 
     btn: {
-        height: 50, 
+        height: RFValue(60), 
         width: 300, 
         borderWidth: 2, 
-        marginTop: 20, 
+        marginTop: RFValue(30), 
         paddingTop: 5, 
-        borderRadius: 25,
+        borderRadius: RFValue(50),
         backgroundColor: 'orange',
         shadowColor: 'black',
         shadowOffset: {
@@ -287,7 +295,7 @@ const styles = StyleSheet.create({
     btnText: {
         color: 'white',
         fontWeight: '200',
-        fontSize: 20,
+        fontSize: RFValue(18),
         marginLeft: 120,
         marginTop: 5
     }

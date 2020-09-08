@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/vector-icons": "^10.0.0",
     "@react-native-community/masked-view": "0.1.5",
     "expo": "^36.0.0",
     "expo-image-picker": "~8.0.1",
@@ -21,6 +22,7 @@
     "react-native-gesture-handler": "~1.5.0",
     "react-native-google-books": "^1.0.4",
     "react-native-reanimated": "~1.4.0",
+    "react-native-responsive-fontsize": "^0.4.3",
     "react-native-safe-area-context": "0.6.0",
     "react-native-screens": "2.0.0-alpha.12",
     "react-native-swipe-list-view": "^2.5.0",

@@ -14,7 +14,9 @@ import SantaAnimation from '../components/SantaClaus.js';
 import db from '../config';
 import firebase from 'firebase';
 
-
+import  { Icon } from 'react-native-elements';
+import { RFValue } from 'react-native-responsive-fontsize'
+import { materialicon } from '@expo/vector-icons'
 
 export default class WelcomeScreen extends Component{
   constructor(){
@@ -171,6 +173,10 @@ showModal = ()=>{
             style={styles.cancelButton}
             onPress={()=>this.setState({"isModalVisible":false})}
           >
+          <Icon
+            type={'materialicon'}
+            name={'cancel'}
+          />
           <Text style={{color:'#ff5722'}}>Cancel</Text>
           </TouchableOpacity>
         </View>
@@ -255,12 +261,12 @@ const styles = StyleSheet.create({
  },
  loginBox:{
    width: 300,
-   height: 40,
+   height: RFValue(50),
    borderBottomWidth: 1.5,
    borderColor : '#ff8a65',
-   fontSize: 20,
+   fontSize: RFValue(20),
    margin:10,
-   paddingLeft:10
+   paddingLeft: RFValue(10)
  },
  KeyboardAvoidingView:{
    flex:1,
@@ -293,7 +299,8 @@ const styles = StyleSheet.create({
    borderRadius:10,
    borderWidth:1,
    marginTop:20,
-   padding:10
+   padding:10,
+   fontSize:RFValue(20),
  },
  registerButton:{
    width:200,
@@ -301,13 +308,14 @@ const styles = StyleSheet.create({
    alignItems:'center',
    justifyContent:'center',
    borderWidth:1,
-   borderRadius:10,
-   marginTop:30
+   borderRadius:RFValue(25),
+   marginTop:RFValue(10)
  },
  registerButtonText:{
    color:'#ff5722',
    fontSize:15,
-   fontWeight:'bold'
+   fontWeight:'bold',
+   borderRadius:RFValue(25),
  },
  cancelButton:{
    width:200,
@@ -315,6 +323,7 @@ const styles = StyleSheet.create({
    justifyContent:'center',
    alignItems:'center',
    marginTop:5,
+   borderRadius:RFValue(25),
  },
 
  button:{
@@ -322,7 +331,7 @@ const styles = StyleSheet.create({
    height:50,
    justifyContent:'center',
    alignItems:'center',
-   borderRadius:25,
+   borderRadius:RFValue(25),
    backgroundColor:"#ff9800",
    shadowColor: "#000",
    shadowOffset: {
@@ -337,6 +346,6 @@ const styles = StyleSheet.create({
  buttonText:{
    color:'#ffff',
    fontWeight:'200',
-   fontSize:20
+   fontSize:RFValue(20)
  }
 })
