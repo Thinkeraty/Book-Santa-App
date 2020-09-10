@@ -33,7 +33,7 @@ export default class RecievedBookScreen extends React.Component {
     getRecievedBooksList = () => {
         this.requestRef = db.collection('Requested_Books').where('user_id', '==', this.state.userId).where('book_status', '==', 'recieved').get()
             .onSnapshot(snapshot => {
-                var recievedBooksList = snapshot.docs.map(doc => {
+                var recievedBooksList = snapshot.docS.map(doc => {
                     doc.data()
                     this.setState({
                         recievedBooksList: recievedBooksList
