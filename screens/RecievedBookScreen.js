@@ -2,15 +2,7 @@ import React from 'react';
 import {
     Text,
     View,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
     FlatList,
-    KeyboardAvoidingView,
-    Image,
-    Alert,
-    Modal,
-    ScrollView
 } from 'react-native'
 
 import { ListItem } from 'react-native-elements'

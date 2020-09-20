@@ -134,7 +134,7 @@ export default class MyDonationScreen extends Component {
              this.state.allDonations.length === 0
              ?(
                <View style={styles.subtitle}>
-                 <Text style={{ fontSize: 20}}>List of all book Donations</Text>
+                 <Text style={{ fontSize: 20}}>List of all Book Donations</Text>
                </View>
              )
              :(
